@@ -1,0 +1,23 @@
+{
+  "name": "multicrust",
+  "version": "0.0.1",
+  "description": "A universal filesystem browser and manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shashi20008/multicrust.git"
+  },
+  "keywords": [
+    "file",
+    "browser"
+  ],
+  "author": "Shashi Shekhar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shashi20008/multicrust/issues"
+  },
+  "homepage": "https://github.com/shashi20008/multicrust#readme"
+}
