@@ -1,5 +1,6 @@
 {
-  "name": "multicrust",
+  "name": "multicrust-core",
+  "type": "commonjs",
   "version": "0.0.1",
   "description": "A universal filesystem browser and manager",
   "main": "index.js",
@@ -19,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/shashi20008/multicrust/issues"
   },
-  "homepage": "https://github.com/shashi20008/multicrust#readme"
+  "homepage": "https://github.com/shashi20008/multicrust#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "is-in-subnet": "^3.1.0"
+  }
 }
