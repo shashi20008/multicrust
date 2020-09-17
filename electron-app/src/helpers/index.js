@@ -1,3 +1,8 @@
+import {
+  useState,
+  useCallback
+} from 'react';
+
 const NON_STANDARD_KEY_MAPPINGS = {
   Down: 'ArrowDown',
   Up: 'ArrowUp',
@@ -28,4 +33,33 @@ export function getIndexAbove(curIdx, numCols, maxItems) {
   }
   return newIdx;
 }
+
+export function useHistory() {
+  const [history, setHistory] = useState([]);
+
+  const pushToHistory = useCallback((element) => {
+    setHistory(old => ([...old, element]));
+  }, []);
+
+  const popFromHistory = useCallback(() => {
+    const retVal = history[history.length - 1];
+    setHistory(old => old.slice(0, old.length - 1));
+    return retVal;
+  }, [history]);
+
+  const getTopItem = useCallback(() => {
+    return history[history.length - 1];
+  }, [history]);
+
+  const getStackHeight = useCallback(() => {
+    return history.length;
+  }, [history]);
+
+  return {
+    pushToHistory,
+    popFromHistory,
+    getTopItem,
+    getStackHeight
+  };
+};
 

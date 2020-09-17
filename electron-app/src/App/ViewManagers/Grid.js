@@ -14,7 +14,7 @@ import {
 
 import './Grid.css';
 
-function GridView({ contents }) {
+function GridView({ contents, navigate, goBack }) {
   const [selected, setSelected] = useState(-1);
   const container = useRef(null);
   const numColumns = useRef(0);
@@ -69,15 +69,15 @@ function GridView({ contents }) {
           setSelected(old => getIndexBelow(old, numColumns.current, contents.length));
         break;
       case 'Enter':
-        console.log('Gonna open');
+        navigate(contents[selected]);
         break;
       case 'Backspace':
-        console.log('Gonna go back');
+        goBack();
         break;
       default:
         console.log('unknown key', key);
     }
-  }, [contents.length]);
+  }, [contents, selected]);
 
   return (
     <div

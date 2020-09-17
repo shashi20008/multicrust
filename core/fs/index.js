@@ -1,4 +1,4 @@
-const { resolve } = require('path');
+const { join, resolve } = require('path');
 const {
   readdir,
   lstat
@@ -22,9 +22,13 @@ async function getContents(path, ignoreCache = false) {
       return fromCache.contents;
     }
   }
-  
+
   const contents = (await readdir(path, { withFileTypes: true }))
-    .map(dirEntryMapper);
+    .map(dirEntryMapper)
+    .map(entry => ({
+      ...entry,
+      fullPath: join(path, entry.name)
+    }));
   cache.put(path, contents);
   return contents;
 }
