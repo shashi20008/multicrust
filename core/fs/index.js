@@ -1,16 +1,15 @@
-const { homedir } = require('os');
 const { resolve } = require('path');
 const {
   readdir,
   lstat
-} = require('fs/promises');
+} = (() => {try { return require('fs/promises');} catch(e) { return require('fs').promises }})();
 const cache = require('./mem-cache');
 const {
   dirEntryMapper,
   INVALID_PATH
 } = require('./helper');
 
-async function getContents(path = homedir(), ignoreCache = false) {
+async function getContents(path, ignoreCache = false) {
   if(!path || typeof path !== 'string' || path.startsWith('.')) {
     throw INVALID_PATH;
   }
