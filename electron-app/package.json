@@ -1,0 +1,45 @@
+{
+  "name": "multicrust-app",
+  "version": "0.0.1",
+  "description": "An electron app to browse filesystem",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "electron": "DEV_MODE=true electron .",
+    "start": "DEV_MODE=true concurrently \"BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\" --kill-others",
+    "start-react": "BROWSER=none react-scripts start",
+    "build": "react-scripts build",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shashi20008/multicrust.git"
+  },
+  "author": "Shashi Shekhar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shashi20008/multicrust/issues"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "electron": "^10.1.1",
+    "lodash": "^4.17.20",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-icons": "^3.11.0",
+    "react-scripts": "^3.4.3",
+    "wait-on": "^5.2.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
