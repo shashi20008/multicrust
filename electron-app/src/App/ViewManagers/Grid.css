@@ -1,6 +1,7 @@
 .fs-grid-container {
   height: 100%;
   outline: none;
+  user-select: none;
 }
 .fs-view.grid-view {
     display: grid;

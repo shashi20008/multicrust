@@ -52,9 +52,13 @@ function GridView({ contents, navigate, goBack }) {
     }
   }, []);
 
+  const onDoubleClick = useCallback((e) => {
+    // This is not gonna work if click doesn't fire before hand.
+    navigate(contents[selected]);
+  }, [ contents, selected, onSelect, navigate ]);
+
   const onKeyPress = useCallback((e) => {
     const key = normalizeKey(e.key);
-    console.log('something pressed', key);
     switch(key) {
       case 'ArrowLeft':
         setSelected(old => (Math.max(old, 0) - 1 + contents.length) % contents.length);
@@ -74,16 +78,15 @@ function GridView({ contents, navigate, goBack }) {
       case 'Backspace':
         goBack();
         break;
-      default:
-        console.log('unknown key', key);
     }
-  }, [contents, selected]);
+  }, [contents, selected, navigate, goBack]);
 
   return (
     <div
       className="fs-view-container fs-grid-container"
       tabIndex={-1}
       onClick={onSelect}
+      onDoubleClick={onDoubleClick}
       onKeyDown={onKeyPress}
     >
       <div ref={container} className="fs-view grid-view" >

@@ -36,6 +36,9 @@ function App() {
     if(!host) { return; }
     httpGet(`${host}/fs/contents/?path=${encodeURIComponent(curPath)}`)
       .then(({body}) => {
+        if(!body || body.err) {
+          throw new Error();
+        }
         setContents(body);
       })
       .catch(err => {
@@ -60,7 +63,6 @@ function App() {
 
   const goBack = useCallback(() => {
     if(getStackHeight() < 2) {
-      console.log('No where to go');
       return;
     }
     popFromHistory();
