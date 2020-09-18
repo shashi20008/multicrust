@@ -1,9 +1,14 @@
 .fs-grid-container {
-  min-height: calc(100% - 45px);
+  min-height: calc(100vh - 45px);
   padding-top: 10px;
   outline: none;
+  border: solid 2px transparent;
   user-select: none;
 }
+.fs-grid-container:focus {
+  border-color: #5f6a6a;
+}
+
 .fs-view.grid-view {
   display: grid;
   grid-gap: 10px;

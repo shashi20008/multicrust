@@ -88,7 +88,7 @@ function GridView({ contents, navigate, goBack }) {
   return (
     <div
       className="fs-view-container fs-grid-container"
-      tabIndex={-1}
+      tabIndex={0}
       onClick={onSelect}
       onDoubleClick={onDoubleClick}
       onKeyDown={onKeyPress}

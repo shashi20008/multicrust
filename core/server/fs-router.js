@@ -4,10 +4,20 @@ const { getContents } = require("../fs");
 const router = Router();
 
 router.get("/contents", (req, res) => {
-  const { path, ignoreCache = false } = req.query;
+  const { ignoreCache = false } = req.query;
+  let { path } = req.query;
 
-  getContents(path || homedir(), ignoreCache)
-    .then((contents) => res.json(contents))
+  if (!path) {
+    path = homedir();
+  }
+
+  getContents(path, ignoreCache)
+    .then((contents) =>
+      res.json({
+        path,
+        contents,
+      })
+    )
     .catch((err) => res.json({ err: err.code }));
 });
 

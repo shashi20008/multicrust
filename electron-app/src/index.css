@@ -15,3 +15,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.v-divider {
+  border-left: 2px solid #839192;
+  width: 1px;
+  height: 65%;
+  margin: 0 15px;
+}

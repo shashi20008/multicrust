@@ -5,12 +5,16 @@ import {
   faArrowLeft,
   faArrowRight,
   faArrowUp,
+  faTh,
+  faThList,
 } from "@fortawesome/free-solid-svg-icons";
+import { ViewTypes } from "./ViewManagers";
 
 import "./Nav.css";
 
 function NavBar({
   curPath,
+  curView,
   navigate,
   goBack,
   goForward,
@@ -21,18 +25,40 @@ function NavBar({
   return (
     <div className="nav-bar">
       <div
-        tabIndex={0}
+        {...(hasBack ? { tabIndex: 0 } : {})}
         className={`nav-icon ${hasBack ? "" : "disabled"}`}
         onClick={hasBack ? goBack : _noop}
       >
         <FontAwesomeIcon icon={faArrowLeft} />
       </div>
-      <div tabIndex={0} className={`nav-icon ${hasForward ? "" : "disabled"}`}>
+      <div
+        {...(hasForward ? { tabIndex: 0 } : {})}
+        className={`nav-icon ${hasForward ? "" : "disabled"}`}
+      >
         <FontAwesomeIcon icon={faArrowRight} />
       </div>
       <div className="nav-icon" tabIndex={0} onClick={goUp}>
         <FontAwesomeIcon icon={faArrowUp} />
       </div>
+      <div className="v-divider" />
+      <div
+        className={`nav-icon ${curView === ViewTypes.GRID ? "active" : ""}`}
+        tabIndex={0}
+      >
+        <FontAwesomeIcon icon={faTh} />
+      </div>
+      <div
+        className={`nav-icon ${curView === ViewTypes.LIST ? "active" : ""}`}
+        tabIndex={0}
+      >
+        <FontAwesomeIcon icon={faThList} />
+      </div>
+      <input
+        className="nav-location-field"
+        placeholder="Type path to navigate..."
+        value={curPath || ""}
+        spellCheck={false}
+      />
     </div>
   );
 }

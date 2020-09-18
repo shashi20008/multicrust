@@ -18,7 +18,7 @@ function App() {
   } = useHistory();
   const [err, setErr] = useState(null);
   const [contents, setContents] = useState("fetching...");
-  const [view, setView] = useState(ViewTypes.GRID);
+  const [view /*, setView*/] = useState(ViewTypes.GRID);
 
   const curPath = getTopItem();
 
@@ -34,10 +34,14 @@ function App() {
     }
     httpGet(`${host}/fs/contents/?path=${encodeURIComponent(curPath)}`)
       .then(({ body }) => {
-        if (!body || body.err) {
+        if (!body || body.err || !body.contents) {
           throw new Error();
         }
-        setContents(body);
+        setContents(body.contents);
+        if (body.path && getTopItem() !== body.path) {
+          popFromHistory();
+          pushToHistory(body.path); // This will cause a second request back to server; Arrrrrrggggh
+        }
       })
       .catch((err) => {
         setErr("Could not read contents of: " + curPath);
@@ -85,7 +89,14 @@ function App() {
   const goUp = useCallback(() => {
     const curPath = getTopItem() || "";
     const separator = curPath.match(SEPARATOR_REGEX)[0];
-    const newPath = curPath.split(SEPARATOR_REGEX).slice(0, -1).join(separator);
+    const newPath =
+      curPath.split(SEPARATOR_REGEX).slice(0, -1).join(separator) || "/";
+
+    // @todo - This requires special handling in windows.
+    if (newPath === curPath) {
+      // We're at root.
+      return;
+    }
     pushToHistory(newPath);
   }, [pushToHistory, getTopItem]);
 
@@ -93,6 +104,8 @@ function App() {
   return (
     <div className="App">
       <NavBar
+        curPath={curPath}
+        curView={view}
         navigate={navigate}
         goBack={goBack}
         goUp={goUp}
