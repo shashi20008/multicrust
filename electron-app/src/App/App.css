@@ -6,13 +6,12 @@
   min-height: 100vh;
 }
 
-
 /* Theme */
 .fs-entry {
-  color: #34495E;
+  color: #34495e;
 }
 
 .fs-entry.selected {
-  background-color: #D7DBDD;
+  background-color: #d7dbdd;
   border-radius: 5px;
 }

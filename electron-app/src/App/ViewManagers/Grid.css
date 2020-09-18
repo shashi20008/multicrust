@@ -5,25 +5,24 @@
   user-select: none;
 }
 .fs-view.grid-view {
-    display: grid;
-    grid-gap: 10px;
-    /* This should probably be calculated from code. */
-    /* Or be controlled by multiple media queries. */
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr))
+  display: grid;
+  grid-gap: 10px;
+  /* This should probably be calculated from code. */
+  /* Or be controlled by multiple media queries. */
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 }
 
 .fs-view.grid-view .fs-entry {
-    padding: 5px;
-    text-align: center;
-    max-width: 100px;
+  padding: 5px;
+  text-align: center;
+  max-width: 100px;
 }
 
-.fs-view.grid-view  .fs-entry-name {
-    word-break: break-word;
+.fs-view.grid-view .fs-entry-name {
+  word-break: break-word;
 }
 
-.fs-view.grid-view  .fs-entry-logo > * {
-    height: 2rem;
-    width: 2rem;
+.fs-view.grid-view .fs-entry-logo > * {
+  height: 2rem;
+  width: 2rem;
 }
-

@@ -1,23 +1,23 @@
-const fs = require('fs');
+const fs = require("fs");
 const fastCache = {};
 
 /**
- * 
+ *
  * @param {String} path Path to cache contents for
- * @param {Array} contents 
+ * @param {Array} contents
  */
 function put(path, contents = []) {
-  if(!path) {
-    throw new Error('path is required');
+  if (!path) {
+    throw new Error("path is required");
   }
   const existing = !!fastCache[path];
 
   fastCache[path] = {
     contents: contents.slice(0),
-    cacheTime: Date.now()
+    cacheTime: Date.now(),
   };
 
-  if(!existing) {
+  if (!existing) {
     startWatching(path);
   }
 }
@@ -43,15 +43,17 @@ const TEN_MINUTES = 10 * 60 * 1000;
 (function cleanup() {
   const tenMinAgo = Date.now() - TEN_MINUTES;
 
-  Object.entries(([path, {cacheTime}]) => {
-    if(cacheTime < tenMinAgo) {
+  Object.entries(([path, { cacheTime }]) => {
+    if (cacheTime < tenMinAgo) {
       invalidate(path);
     }
-  })
+  });
 
   setTimeout(cleanup, TEN_MINUTES);
 })();
 
 module.exports = {
-  get, put, invalidate
+  get,
+  put,
+  invalidate,
 };

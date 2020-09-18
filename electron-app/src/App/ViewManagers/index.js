@@ -1,13 +1,13 @@
-import GridView from './Grid';
+import GridView from "./Grid";
 
 export const ViewTypes = {
-  GRID: 'grid',
-  LIST: 'list',
-  PREVIEW: 'preview'
+  GRID: "grid",
+  LIST: "list",
+  PREVIEW: "preview",
 };
 
 const ViewTypeToComponentMap = {
-  [ViewTypes.GRID]: GridView
+  [ViewTypes.GRID]: GridView,
 };
 
 export function getViewFromType(viewType) {
@@ -15,4 +15,3 @@ export function getViewFromType(viewType) {
 }
 
 export { GridView };
-
