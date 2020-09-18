@@ -1,26 +1,29 @@
 import React from 'react';
 import _omit from 'lodash/omit';
 import {
-  FaFolder,
-  FaFolderOpen,
-  FaFile
-} from 'react-icons/fa';
+  FontAwesomeIcon
+} from '@fortawesome/react-fontawesome';
+import {
+  faFolder,
+  faFolderOpen,
+  faFile
+} from '@fortawesome/free-solid-svg-icons';
 
 function getLogoFromType(type, selected) {
   if(type === 'DIR') {
-    return selected ? FaFolderOpen : FaFolder;
+    return selected ? faFolderOpen : faFolder;
   }
-  return FaFile;
+  return faFile;
 }
 
 export default function FSEntry(props) {
-  const Logo = getLogoFromType(props.type, props.selected);
+  const logo = getLogoFromType(props.type, props.selected);
 
-  const restProps = _omit(props, ['selected', 'name', 'type', 'logo']);
+  const restProps = _omit(props, ['selected', 'name', 'type', 'logo', 'fullPath']);
   return (
     <div className={`fs-entry ${props.selected ? 'selected' : ''}`} onClick={props.onSelect} {...restProps}>
       <div className="fs-entry-logo">
-        <Logo />
+        <FontAwesomeIcon icon={logo} />
       </div>
       <div className="fs-entry-name">
         {props.name}

@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow } = require('electron');
 const path = require('path');
 const { fork } = require('child_process');
 
@@ -10,7 +10,7 @@ function createWindow(host, port) {
       nodeIntegration: true
     }
   });
-  
+
   const query = `?host=${encodeURIComponent(`http://${host}:${port}`)}`
   if(process.env.DEV_MODE) {
     win.loadURL(`http://localhost:3000${query}`);
@@ -23,7 +23,7 @@ function createWindow(host, port) {
 function prepareLocalCore() {
   return new Promise((resolve, reject) => {
     const serverPath = '../core/server/index.js';
-    const localServer = fork(serverPath, 
+    const localServer = fork(serverPath,
       {
         stdio: [0, 1, 2, 'ipc'],
         env: {
@@ -32,7 +32,7 @@ function prepareLocalCore() {
         }
       }
     );
-    
+
     localServer.once('message', (port) => {
       console.log('got port', port);
       if(isNaN(port)) {
@@ -52,9 +52,11 @@ function prepareLocalCore() {
   });
 }
 
-app.whenReady()
-  .then(prepareLocalCore)
-  .then(port => createWindow('localhost', port));
+Promise.all([
+  app.whenReady(),
+  prepareLocalCore()
+])
+  .then(([,port]) => createWindow('localhost', port));
 
 /**
  * Quits the application when all windows are closed.
