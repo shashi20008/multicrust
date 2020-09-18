@@ -9,8 +9,11 @@ import {
   ViewTypes,
   getViewFromType
 } from './ViewManagers';
+import NavBar from './Nav';
 
 import './App.css';
+
+const SEPARATOR_REGEX = /\/|\\/g;
 
 function App() {
   const [host, setHost] = useState('');
@@ -83,9 +86,22 @@ function App() {
     changeDirectory, openFile
   ]);
 
+  const goUp = useCallback(() => {
+    const curPath = getTopItem() || '';
+    const separator = curPath.match(SEPARATOR_REGEX)[0];
+    const newPath = curPath.split(SEPARATOR_REGEX).slice(0, -1).join(separator);
+    pushToHistory(newPath);
+  }, [pushToHistory, getTopItem]);
+
   const ViewComponent = getViewFromType(view);
   return (
     <div className="App">
+      <NavBar
+        navigate={navigate}
+        goBack={goBack}
+        goUp={goUp}
+        hasBack={getStackHeight() > 1}
+        hasForward={false} />
       <ViewComponent contents={contents} navigate={navigate} goBack={goBack} />
     </div>
   );
