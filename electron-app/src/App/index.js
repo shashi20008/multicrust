@@ -3,6 +3,7 @@ import { useHistory } from "../helpers";
 import { httpGet } from "../helpers/fetch";
 import { ViewTypes, getViewFromType } from "./ViewManagers";
 import NavBar from "./Nav";
+import { HostContext } from "../common/contexts";
 
 import "./App.css";
 
@@ -102,18 +103,24 @@ function App() {
 
   const ViewComponent = getViewFromType(view);
   return (
-    <div className="App">
-      <NavBar
-        curPath={curPath}
-        curView={view}
-        navigate={navigate}
-        goBack={goBack}
-        goUp={goUp}
-        hasBack={getStackHeight() > 1}
-        hasForward={false}
-      />
-      <ViewComponent contents={contents} navigate={navigate} goBack={goBack} />
-    </div>
+    <HostContext.Provider value={host}>
+      <div className="App">
+        <NavBar
+          curPath={curPath}
+          curView={view}
+          navigate={navigate}
+          goBack={goBack}
+          goUp={goUp}
+          hasBack={getStackHeight() > 1}
+          hasForward={false}
+        />
+        <ViewComponent
+          contents={contents}
+          navigate={navigate}
+          goBack={goBack}
+        />
+      </div>
+    </HostContext.Provider>
   );
 }
 

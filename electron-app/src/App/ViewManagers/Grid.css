@@ -1,9 +1,10 @@
 .fs-grid-container {
-  min-height: calc(100vh - 45px);
+  height: calc(100vh - 45px);
   padding-top: 10px;
   outline: none;
   border: solid 2px transparent;
   user-select: none;
+  overflow-y: auto;
 }
 .fs-grid-container:focus {
   border-color: #5f6a6a;

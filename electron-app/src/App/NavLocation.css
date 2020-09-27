@@ -1,0 +1,45 @@
+.nav-location-container {
+  position: relative;
+  margin-left: 15px;
+  min-width: 250px;
+  width: inherit;
+}
+.nav-location-field {
+  outline: none;
+  height: 2rem;
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.5rem;
+  text-overflow: ellipsis;
+}
+
+.nav-loc-suggestions {
+  position: absolute;
+  display: none;
+  top: 2rem;
+  font-size: 1rem;
+  left: 0;
+  right: 0;
+  max-height: 250px;
+  overflow-y: auto;
+  background-color: white;
+  user-select: none;
+}
+
+.nav-location-container:focus-within .nav-loc-suggestions {
+  display: block;
+  border: 1px solid gray;
+  border-top-width: 0;
+}
+
+.nav-loc-suggestions .suggestion-item {
+  margin-top: 2px;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+
+.nav-loc-suggestions .suggestion-item:focus,
+.nav-loc-suggestions .suggestion-item.focused {
+  background-color: #bfc9ca;
+  outline: none;
+}

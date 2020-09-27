@@ -1,4 +1,6 @@
 .nav-bar {
+  position: fixed;
+  top: 0;
   display: flex;
   align-items: center;
   font-size: 1.25rem;
@@ -35,15 +37,4 @@
 
 .nav-icon + .nav-icon {
   margin-left: 1rem;
-}
-
-.nav-location-field {
-  margin-left: 15px;
-  outline: none;
-  height: 2rem;
-  font-size: 1rem;
-  padding: 0.5rem;
-  width: inherit;
-  min-width: 250px;
-  text-overflow: ellipsis;
 }

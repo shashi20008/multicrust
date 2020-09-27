@@ -8,6 +8,7 @@ import {
   faTh,
   faThList,
 } from "@fortawesome/free-solid-svg-icons";
+import NavLocation from "./NavLocation";
 import { ViewTypes } from "./ViewManagers";
 
 import "./Nav.css";
@@ -53,12 +54,7 @@ function NavBar({
       >
         <FontAwesomeIcon icon={faThList} />
       </div>
-      <input
-        className="nav-location-field"
-        placeholder="Type path to navigate..."
-        value={curPath || ""}
-        spellCheck={false}
-      />
+      <NavLocation curPath={curPath || ""} />
     </div>
   );
 }
