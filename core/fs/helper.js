@@ -1,4 +1,5 @@
 const { Dirent } = require("fs");
+const path = require("path");
 
 const DEV_TYPES = {
   BLOCK_DEV: "BLOCK_DEV",
@@ -22,6 +23,17 @@ const DIR_ENTRY_FN_ENUM_MAP = {
   toString: DEV_TYPES.UNKNOWN,
 };
 
+const COMMON_LOCS = [
+  "DOCUMENTS",
+  "DOWNLOADS",
+  "DESKTOP",
+  "MUSIC",
+  "PICTURES",
+  "PHOTOS",
+  "PUBLIC",
+  "VIDEOS",
+];
+
 const INVALID_PATH = new Error("Invalid path");
 INVALID_PATH.code = "INVALID_PATH";
 
@@ -42,8 +54,28 @@ function dirEntryMapper(entry) {
   };
 }
 
+function commonLocMapper(baseDir) {
+  return (all, thisItem) => {
+    const name = (thisItem.name || "").toUpperCase();
+
+    // TODO: If symbolic link, resolve and check.
+    if (!thisItem.isDirectory() || !COMMON_LOCS.includes(name)) {
+      return all;
+    }
+
+    return {
+      ...all,
+      [name]: {
+        name: thisItem.name,
+        fullPath: `${baseDir}${path.sep}${thisItem.name}`,
+      },
+    };
+  };
+}
+
 module.exports = {
   INVALID_PATH,
   dirEntry2Type,
   dirEntryMapper,
+  commonLocMapper,
 };

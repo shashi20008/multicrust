@@ -1,7 +1,8 @@
 const express = require("express");
 const { isPrivate, isLocalhost } = require("is-in-subnet");
 
-const fsRouter = require("./fs-router.js");
+const fsRouter = require("./fs-router");
+const settingsRouter = require("./settings-router");
 
 const LOCAL_MODE = !!process.env.LOCAL_MODE;
 const PORT = LOCAL_MODE ? 0 : 7411; // get it from config, once we have those.
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/fs", fsRouter);
+app.use("/settings", settingsRouter);
 
 const srv = app.listen(PORT, () => {
   const realPort = srv.address().port;

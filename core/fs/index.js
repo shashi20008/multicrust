@@ -1,4 +1,5 @@
-const { join, resolve } = require("path");
+const { join, resolve, basename, sep } = require("path");
+const { homedir, tmpdir, platform } = require("os");
 const { readdir, lstat } = (() => {
   try {
     return require("fs/promises");
@@ -7,7 +8,7 @@ const { readdir, lstat } = (() => {
   }
 })();
 const cache = require("./mem-cache");
-const { dirEntryMapper, INVALID_PATH } = require("./helper");
+const { dirEntryMapper, commonLocMapper, INVALID_PATH } = require("./helper");
 
 async function getContents(path, ignoreCache = false) {
   if (!path || typeof path !== "string" || path.startsWith(".")) {
@@ -33,6 +34,32 @@ async function getContents(path, ignoreCache = false) {
   return contents;
 }
 
+async function getCommonLocs() {
+  const homeDir = homedir();
+
+  const allDirs = await readdir(homeDir, {
+    encoding: "utf8",
+    withFileTypes: true,
+  });
+
+  const commonLocations = (allDirs || []).reduce(commonLocMapper(homeDir), {});
+  commonLocations.HOME = {
+    name: basename(homeDir),
+    fullPath: homeDir,
+  };
+  commonLocations.TEMP = {
+    name: "Temp",
+    fullPath: tmpdir(),
+  };
+
+  return {
+    platform: platform(),
+    commonLocations,
+    sep,
+  };
+}
+
 module.exports = {
   getContents,
+  getCommonLocs,
 };
