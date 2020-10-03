@@ -10,33 +10,33 @@ export function getSep(path) {
   if (separator) {
     cachedSeparator = separator[0];
   }
-  return cachedSeparator || "/";
+  return cachedSeparator || '/';
 }
 
 export function baseDir(path) {
   const separator = getSep(path);
   // Wouldn't work very well on windows.
   return (
-    path.split(new RegExp(separator, "g")).slice(0, -1).join(separator) ||
+    path.split(new RegExp(separator, 'g')).slice(0, -1).join(separator) ||
     separator
   );
 }
 
 export function filterSuggestions(all, path) {
   const separator = getSep(path);
-  const basename = (path.split(separator).pop() || "").toLowerCase();
+  const basename = (path.split(separator).pop() || '').toLowerCase();
 
   if (!basename) {
     return all || [];
   }
 
   return (all || []).filter((item) =>
-    (item.name || "").toLowerCase().startsWith(basename)
+    (item.name || '').toLowerCase().startsWith(basename)
   );
 }
 
 export function relativePath(absolute, base) {
-  if ((absolute || "").startsWith(base)) {
-    return absolute.replace(base, "").replace(/^\//, "");
+  if ((absolute || '').startsWith(base)) {
+    return absolute.replace(base, '').replace(/^\//, '');
   }
 }

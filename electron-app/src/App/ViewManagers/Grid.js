@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import _get from "lodash/get";
-import FSEntry from "../Entry";
-import { normalizeKey, getIndexBelow, getIndexAbove } from "../../helpers";
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import _get from 'lodash/get';
+import FSEntry from '../Entry';
+import { normalizeKey, getIndexBelow, getIndexAbove } from '../../helpers';
 
-import "./Grid.css";
+import './Grid.css';
 
 function GridView({ contents, navigate, goBack }) {
   const [selected, setSelected] = useState(-1);
@@ -27,18 +27,18 @@ function GridView({ contents, navigate, goBack }) {
       numColumns.current = allChildren.length;
     }
   }, [
-    _get(container, "current.offsetWidth", 0),
-    _get(container, "current.children.length", 0),
+    _get(container, 'current.offsetWidth', 0),
+    _get(container, 'current.children.length', 0),
   ]);
 
   const onSelect = useCallback((e) => {
     const { currentTarget } = e;
     let { target } = e;
-    while (target !== currentTarget && !target.classList.contains("fs-entry")) {
+    while (target !== currentTarget && !target.classList.contains('fs-entry')) {
       target = target.parentElement;
     }
-    if (target.classList.contains("fs-entry")) {
-      setSelected(Number(target.getAttribute("data-idx")));
+    if (target.classList.contains('fs-entry')) {
+      setSelected(Number(target.getAttribute('data-idx')));
     } else {
       setSelected(-1);
     }
@@ -56,28 +56,28 @@ function GridView({ contents, navigate, goBack }) {
     (e) => {
       const key = normalizeKey(e.key);
       switch (key) {
-        case "ArrowLeft":
+        case 'ArrowLeft':
           setSelected(
             (old) => (Math.max(old, 0) - 1 + contents.length) % contents.length
           );
           break;
-        case "ArrowRight":
+        case 'ArrowRight':
           setSelected((old) => (old + 1) % contents.length);
           break;
-        case "ArrowUp":
+        case 'ArrowUp':
           setSelected((old) =>
             getIndexAbove(old, numColumns.current, contents.length)
           );
           break;
-        case "ArrowDown":
+        case 'ArrowDown':
           setSelected((old) =>
             getIndexBelow(old, numColumns.current, contents.length)
           );
           break;
-        case "Enter":
+        case 'Enter':
           navigate(contents[selected]);
           break;
-        case "Backspace":
+        case 'Backspace':
           goBack();
           break;
       }

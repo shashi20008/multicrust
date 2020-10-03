@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require('fs');
 const fastCache = {};
 
 /**
@@ -8,7 +8,7 @@ const fastCache = {};
  */
 function put(path, contents = []) {
   if (!path) {
-    throw new Error("path is required");
+    throw new Error('path is required');
   }
   const existing = !!fastCache[path];
 

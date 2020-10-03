@@ -5,17 +5,17 @@ import React, {
   useCallback,
   useContext,
   useRef,
-} from "react";
-import { httpGet } from "../helpers/fetch";
-import { baseDir, relativePath, filterSuggestions } from "../helpers/utils";
-import { HostContext } from "../common/contexts";
-import { normalizeKey } from "../helpers";
+} from 'react';
+import { httpGet } from '../helpers/fetch';
+import { baseDir, relativePath, filterSuggestions } from '../helpers/utils';
+import { HostContext } from '../common/contexts';
+import { normalizeKey } from '../helpers';
 
-import "./NavLocation.css";
+import './NavLocation.css';
 
 function NavLocation({ curPath, navigate }) {
   const host = useContext(HostContext);
-  const [localPath, setLocalPath] = useState(curPath || "");
+  const [localPath, setLocalPath] = useState(curPath || '');
   const [curDir, setCurDir] = useState(() => baseDir(curPath));
   const dirContents = useRef([]);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -44,7 +44,7 @@ function NavLocation({ curPath, navigate }) {
           throw new Error();
         }
         const allDirs = (body.contents || []).filter(
-          ({ type }) => type === "DIR"
+          ({ type }) => type === 'DIR'
         );
         dirContents.current = allDirs;
         setFilteredItems(filterSuggestions(allDirs, localPath));
@@ -56,7 +56,7 @@ function NavLocation({ curPath, navigate }) {
   }, [curDir]);
 
   useLayoutEffect(() => {
-    const suggestions = document.querySelector(".nav-loc-suggestions");
+    const suggestions = document.querySelector('.nav-loc-suggestions');
     if (
       !suggestions ||
       !suggestions.children.length ||
@@ -68,7 +68,7 @@ function NavLocation({ curPath, navigate }) {
     if (elem.scrollIntoViewIfNeeded) {
       elem.scrollIntoViewIfNeeded();
     } else {
-      elem.scrollIntoView({ block: "center" });
+      elem.scrollIntoView({ block: 'center' });
     }
   }, [selected]);
 
@@ -85,22 +85,22 @@ function NavLocation({ curPath, navigate }) {
       const key = normalizeKey(e.key);
       const maxLen = filteredItems.length;
       switch (key) {
-        case "ArrowUp":
+        case 'ArrowUp':
           setSelected((old) => (old - 1 + maxLen) % maxLen);
           e.preventDefault();
           break;
-        case "ArrowDown":
+        case 'ArrowDown':
           setSelected((old) => (old + 1) % maxLen);
           e.preventDefault();
           break;
-        case "Enter":
+        case 'Enter':
           if (!filteredItems[selected]) {
-            return setError(new Error("NO_SELECT"));
+            return setError(new Error('NO_SELECT'));
           }
           navigate(filteredItems[selected]);
           break;
-        case "Escape":
-          document.querySelector(".fs-view-container").focus();
+        case 'Escape':
+          document.querySelector('.fs-view-container').focus();
           break;
         default:
           break;
@@ -116,9 +116,9 @@ function NavLocation({ curPath, navigate }) {
   return (
     <div className="nav-location-container">
       <input
-        className={`nav-location-field ${error ? "error-animation" : ""}`}
+        className={`nav-location-field ${error ? 'error-animation' : ''}`}
         placeholder="Type path to navigate..."
-        value={localPath || ""}
+        value={localPath || ''}
         onChange={onUserInput}
         onKeyDown={onKeyDown}
         spellCheck={false}
@@ -126,10 +126,10 @@ function NavLocation({ curPath, navigate }) {
       />
       <div className="nav-loc-suggestions">
         {filteredItems
-          .filter(({ type }) => type === "DIR")
+          .filter(({ type }) => type === 'DIR')
           .map((item, idx) => (
             <div
-              className={`suggestion-item ${selected === idx ? "focused" : ""}`}
+              className={`suggestion-item ${selected === idx ? 'focused' : ''}`}
               key={item.fullPath}
             >
               {item.name}

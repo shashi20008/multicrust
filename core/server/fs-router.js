@@ -1,9 +1,9 @@
-const { homedir } = require("os");
-const { Router } = require("express");
-const { getContents } = require("../fs");
+const { homedir } = require('os');
+const { Router } = require('express');
+const { getContents } = require('../fs');
 const router = Router();
 
-router.get("/contents", (req, res) => {
+router.get('/contents', (req, res) => {
   const { ignoreCache = false } = req.query;
   let { path } = req.query;
 

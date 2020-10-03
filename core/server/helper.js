@@ -1,4 +1,4 @@
-import { networkInterfaces } from "os";
+import { networkInterfaces } from 'os';
 
 export default function getAllCIDRs() {
   const allInterfaces = networkInterfaces();

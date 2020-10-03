@@ -1,3 +1,3 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
-export const HostContext = createContext("http://localhost:7411");
+export const HostContext = createContext('http://localhost:7411');

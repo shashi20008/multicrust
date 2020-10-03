@@ -1,17 +1,17 @@
-import React from "react";
-import _noop from "lodash/noop";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from 'react';
+import _noop from 'lodash/noop';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowLeft,
   faArrowRight,
   faArrowUp,
   faTh,
   faThList,
-} from "@fortawesome/free-solid-svg-icons";
-import NavLocation from "./NavLocation";
-import { ViewTypes } from "./ViewManagers";
+} from '@fortawesome/free-solid-svg-icons';
+import NavLocation from './NavLocation';
+import { ViewTypes } from './ViewManagers';
 
-import "./Nav.css";
+import './Nav.css';
 
 function NavBar({
   curPath,
@@ -27,14 +27,14 @@ function NavBar({
     <div className="nav-bar">
       <div
         {...(hasBack ? { tabIndex: 0 } : {})}
-        className={`nav-icon ${hasBack ? "" : "disabled"}`}
+        className={`nav-icon ${hasBack ? '' : 'disabled'}`}
         onClick={hasBack ? goBack : _noop}
       >
         <FontAwesomeIcon icon={faArrowLeft} />
       </div>
       <div
         {...(hasForward ? { tabIndex: 0 } : {})}
-        className={`nav-icon ${hasForward ? "" : "disabled"}`}
+        className={`nav-icon ${hasForward ? '' : 'disabled'}`}
       >
         <FontAwesomeIcon icon={faArrowRight} />
       </div>
@@ -43,18 +43,18 @@ function NavBar({
       </div>
       <div className="v-divider" />
       <div
-        className={`nav-icon ${curView === ViewTypes.GRID ? "active" : ""}`}
+        className={`nav-icon ${curView === ViewTypes.GRID ? 'active' : ''}`}
         tabIndex={0}
       >
         <FontAwesomeIcon icon={faTh} />
       </div>
       <div
-        className={`nav-icon ${curView === ViewTypes.LIST ? "active" : ""}`}
+        className={`nav-icon ${curView === ViewTypes.LIST ? 'active' : ''}`}
         tabIndex={0}
       >
         <FontAwesomeIcon icon={faThList} />
       </div>
-      <NavLocation curPath={curPath || ""} navigate={navigate} />
+      <NavLocation curPath={curPath || ''} navigate={navigate} />
     </div>
   );
 }

@@ -1,9 +1,9 @@
-const _omit = require("lodash/omit");
-const _pick = require("lodash/pick");
+const _omit = require('lodash/omit');
+const _pick = require('lodash/pick');
 
 const JSON_HEADERS = {
-  "Content-Type": "application/json",
-  Accept: "application/json",
+  'Content-Type': 'application/json',
+  Accept: 'application/json',
 };
 
 /**
@@ -16,22 +16,22 @@ const JSON_HEADERS = {
  */
 export async function makeHTTPRequest(
   uri,
-  method = "GET",
+  method = 'GET',
   body = null,
   fetchOpts = {}
 ) {
   const serialize =
-    body !== null && !Buffer.isBuffer(body) && typeof body !== "string";
+    body !== null && !Buffer.isBuffer(body) && typeof body !== 'string';
 
   const resp = await fetch(uri, {
     method,
-    credentials: "same-origin",
+    credentials: 'same-origin',
     headers: {
       ...fetchOpts.headers,
       ...(serialize ? JSON_HEADERS : {}),
     },
     body: serialize ? JSON.stringify(body) : body,
-    ..._omit(fetchOpts, ["method", "headers", "body"]),
+    ..._omit(fetchOpts, ['method', 'headers', 'body']),
   });
 
   // We always deal with JSON.
@@ -46,7 +46,7 @@ export async function makeHTTPRequest(
   }
 
   return {
-    ..._pick(resp, ["status", "ok", "headers"]),
+    ..._pick(resp, ['status', 'ok', 'headers']),
     body: respJSON,
   };
 }
@@ -57,7 +57,7 @@ export async function makeHTTPRequest(
  * @param {Object} fetchOpts - Opaque options passed to underlying fetch.
  */
 export function httpGet(uri, fetchOpts) {
-  return makeHTTPRequest(uri, "GET", null, fetchOpts);
+  return makeHTTPRequest(uri, 'GET', null, fetchOpts);
 }
 
 /**
@@ -67,5 +67,5 @@ export function httpGet(uri, fetchOpts) {
  * @param {Object} fetchOpts - Opaque options passed to underlying fetch.
  */
 export function httpPost(uri, body, fetchOpts) {
-  return makeHTTPRequest(uri, "POST", body, fetchOpts);
+  return makeHTTPRequest(uri, 'POST', body, fetchOpts);
 }

@@ -1,11 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react';
 
 const NON_STANDARD_KEY_MAPPINGS = {
-  Down: "ArrowDown",
-  Up: "ArrowUp",
-  Left: "ArrowLeft",
-  Right: "ArrowRight",
-  Esc: "Escape",
+  Down: 'ArrowDown',
+  Up: 'ArrowUp',
+  Left: 'ArrowLeft',
+  Right: 'ArrowRight',
+  Esc: 'Escape',
 };
 export function normalizeKey(key) {
   return NON_STANDARD_KEY_MAPPINGS[key] || key;
