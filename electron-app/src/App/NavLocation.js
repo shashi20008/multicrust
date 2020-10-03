@@ -7,22 +7,27 @@ import React, {
   useRef,
 } from "react";
 import { httpGet } from "../helpers/fetch";
-import { baseDir, relativePath } from "../helpers/utils";
+import { baseDir, relativePath, filterSuggestions } from "../helpers/utils";
 import { HostContext } from "../common/contexts";
 import { normalizeKey } from "../helpers";
 
 import "./NavLocation.css";
 
-function NavLocation({ curPath }) {
+function NavLocation({ curPath, navigate }) {
   const host = useContext(HostContext);
   const [localPath, setLocalPath] = useState(curPath || "");
   const [curDir, setCurDir] = useState(() => baseDir(curPath));
   const dirContents = useRef([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [selected, setSelected] = useState(0);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     setLocalPath(curPath);
+    setCurDir(baseDir(curPath));
+    setSelected(0);
+    dirContents.current = [];
+    setFilteredItems([]);
   }, [curPath]);
 
   useEffect(() => {
@@ -42,7 +47,7 @@ function NavLocation({ curPath }) {
           ({ type }) => type === "DIR"
         );
         dirContents.current = allDirs;
-        setFilteredItems(allDirs);
+        setFilteredItems(filterSuggestions(allDirs, localPath));
       })
       .catch((err) => {
         dirContents.current = [];
@@ -68,9 +73,11 @@ function NavLocation({ curPath }) {
   }, [selected]);
 
   const onUserInput = useCallback((e) => {
-    console.log("user input detected", e.key);
-    setLocalPath(e.target.value);
-    setCurDir(baseDir(e.target.value));
+    const { value } = e.target;
+    setLocalPath(value);
+    setCurDir(baseDir(value));
+    setFilteredItems(filterSuggestions(dirContents.current, value));
+    setError(null);
   }, []);
 
   const onKeyDown = useCallback(
@@ -86,22 +93,36 @@ function NavLocation({ curPath }) {
           setSelected((old) => (old + 1) % maxLen);
           e.preventDefault();
           break;
+        case "Enter":
+          if (!filteredItems[selected]) {
+            return setError(new Error("NO_SELECT"));
+          }
+          navigate(filteredItems[selected]);
+          break;
+        case "Escape":
+          document.querySelector(".fs-view-container").focus();
+          break;
         default:
           break;
       }
     },
-    [filteredItems]
+    [filteredItems, selected]
   );
+
+  const animationEnd = useCallback(() => {
+    setError(null);
+  });
 
   return (
     <div className="nav-location-container">
       <input
-        className="nav-location-field"
+        className={`nav-location-field ${error ? "error-animation" : ""}`}
         placeholder="Type path to navigate..."
         value={localPath || ""}
         onChange={onUserInput}
         onKeyDown={onKeyDown}
         spellCheck={false}
+        onAnimationEnd={animationEnd}
       />
       <div className="nav-loc-suggestions">
         {filteredItems

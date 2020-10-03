@@ -54,7 +54,7 @@ function NavBar({
       >
         <FontAwesomeIcon icon={faThList} />
       </div>
-      <NavLocation curPath={curPath || ""} />
+      <NavLocation curPath={curPath || ""} navigate={navigate} />
     </div>
   );
 }

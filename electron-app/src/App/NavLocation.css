@@ -13,6 +13,32 @@
   text-overflow: ellipsis;
 }
 
+.nav-location-field.error-animation {
+  border-color: red;
+  animation: shake-anim 0.3s linear 0s;
+}
+
+@keyframes shake-anim {
+  0% {
+    transform: translate(10px);
+  }
+  20% {
+    transform: translate(-10px);
+  }
+  40% {
+    transform: translate(5px);
+  }
+  60% {
+    transform: translate(-5px);
+  }
+  80% {
+    transform: translate(3px);
+  }
+  100% {
+    transform: translate(0px);
+  }
+}
+
 .nav-loc-suggestions {
   position: absolute;
   display: none;

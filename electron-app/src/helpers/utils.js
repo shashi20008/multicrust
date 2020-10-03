@@ -22,6 +22,19 @@ export function baseDir(path) {
   );
 }
 
+export function filterSuggestions(all, path) {
+  const separator = getSep(path);
+  const basename = (path.split(separator).pop() || "").toLowerCase();
+
+  if (!basename) {
+    return all || [];
+  }
+
+  return (all || []).filter((item) =>
+    (item.name || "").toLowerCase().startsWith(basename)
+  );
+}
+
 export function relativePath(absolute, base) {
   if ((absolute || "").startsWith(base)) {
     return absolute.replace(base, "").replace(/^\//, "");
