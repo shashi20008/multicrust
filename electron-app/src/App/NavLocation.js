@@ -7,16 +7,17 @@ import React, {
   useRef,
 } from 'react';
 import { httpGet } from '../helpers/fetch';
-import { baseDir, relativePath, filterSuggestions } from '../helpers/utils';
-import { HostContext } from '../common/contexts';
+import { baseDir, filterSuggestions } from '../helpers/utils';
+import { HostContext, HostConfigContext } from '../common/contexts';
 import { normalizeKey } from '../helpers';
 
 import './NavLocation.css';
 
 function NavLocation({ curPath, navigate }) {
   const host = useContext(HostContext);
+  const hostConfig = useContext(HostConfigContext);
   const [localPath, setLocalPath] = useState(curPath || '');
-  const [curDir, setCurDir] = useState(() => baseDir(curPath));
+  const [curDir, setCurDir] = useState(() => baseDir(curPath, hostConfig.sep));
   const dirContents = useRef([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [selected, setSelected] = useState(0);
@@ -24,7 +25,7 @@ function NavLocation({ curPath, navigate }) {
 
   useEffect(() => {
     setLocalPath(curPath);
-    setCurDir(baseDir(curPath));
+    setCurDir(baseDir(curPath, hostConfig.sep));
     setSelected(0);
     dirContents.current = [];
     setFilteredItems([]);
@@ -47,7 +48,7 @@ function NavLocation({ curPath, navigate }) {
           ({ type }) => type === 'DIR'
         );
         dirContents.current = allDirs;
-        setFilteredItems(filterSuggestions(allDirs, localPath));
+        setFilteredItems(filterSuggestions(allDirs, localPath, hostConfig.sep));
       })
       .catch((err) => {
         dirContents.current = [];
@@ -72,13 +73,18 @@ function NavLocation({ curPath, navigate }) {
     }
   }, [selected]);
 
-  const onUserInput = useCallback((e) => {
-    const { value } = e.target;
-    setLocalPath(value);
-    setCurDir(baseDir(value));
-    setFilteredItems(filterSuggestions(dirContents.current, value));
-    setError(null);
-  }, []);
+  const onUserInput = useCallback(
+    (e) => {
+      const { value } = e.target;
+      setLocalPath(value);
+      setCurDir(baseDir(value, hostConfig.sep));
+      setFilteredItems(
+        filterSuggestions(dirContents.current, value, hostConfig.sep)
+      );
+      setError(null);
+    },
+    [hostConfig]
+  );
 
   const onKeyDown = useCallback(
     (e) => {

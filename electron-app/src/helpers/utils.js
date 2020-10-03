@@ -13,8 +13,8 @@ export function getSep(path) {
   return cachedSeparator || '/';
 }
 
-export function baseDir(path) {
-  const separator = getSep(path);
+export function baseDir(path, sep) {
+  const separator = sep || getSep(path);
   // Wouldn't work very well on windows.
   return (
     path.split(new RegExp(separator, 'g')).slice(0, -1).join(separator) ||
@@ -22,8 +22,8 @@ export function baseDir(path) {
   );
 }
 
-export function filterSuggestions(all, path) {
-  const separator = getSep(path);
+export function filterSuggestions(all, path, sep) {
+  const separator = sep || getSep(path);
   const basename = (path.split(separator).pop() || '').toLowerCase();
 
   if (!basename) {
@@ -35,8 +35,10 @@ export function filterSuggestions(all, path) {
   );
 }
 
-export function relativePath(absolute, base) {
+export function relativePath(absolute, base, sep) {
+  const separator = sep || getSep(absolute);
   if ((absolute || '').startsWith(base)) {
-    return absolute.replace(base, '').replace(/^\//, '');
+    return absolute.replace(base, '').replace(new RegExp(`^${separator}`), '');
   }
+  return absolute;
 }
