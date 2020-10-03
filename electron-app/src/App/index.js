@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import _get from 'lodash/get';
 import { useHistory } from '../helpers';
 import { httpGet } from '../helpers/fetch';
 import { ViewTypes, getViewFromType } from './ViewManagers';
 import NavBar from './Nav';
-import { HostContext } from '../common/contexts';
+import { HostContext, HostConfigContext } from '../common/contexts';
 
 import './App.css';
 
@@ -20,19 +21,31 @@ function App() {
   const [err, setErr] = useState(null);
   const [contents, setContents] = useState('fetching...');
   const [view /*, setView*/] = useState(ViewTypes.GRID);
-
+  const [settings, setSettings] = useState({});
   const curPath = getTopItem();
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     setHost(query.get('host'));
-    pushToHistory('');
+
+    (async () => {
+      const settingsResp = await httpGet(`${host}/settings`);
+      if (!settingsResp || settingsResp.err) {
+        throw new Error('FS_CONFIG_CALL_FAILED');
+      }
+      setSettings(settingsResp);
+      pushToHistory(_get(settingsResp, 'commonLocations.HOME', ''));
+    })().catch((e) => {
+      setErr(e.message);
+      pushToHistory('');
+    });
   }, []);
 
   useEffect(() => {
-    if (!host) {
+    if (!host || curPath === undefined) {
       return;
     }
+
     httpGet(`${host}/fs/contents/?path=${encodeURIComponent(curPath)}`)
       .then(({ body }) => {
         if (!body || body.err || !body.contents) {
@@ -103,24 +116,26 @@ function App() {
 
   const ViewComponent = getViewFromType(view);
   return (
-    <HostContext.Provider value={host}>
-      <div className="App">
-        <NavBar
-          curPath={curPath}
-          curView={view}
-          navigate={navigate}
-          goBack={goBack}
-          goUp={goUp}
-          hasBack={getStackHeight() > 1}
-          hasForward={false}
-        />
-        <ViewComponent
-          contents={contents}
-          navigate={navigate}
-          goBack={goBack}
-        />
-      </div>
-    </HostContext.Provider>
+    <HostConfigContext.Provider value={settings}>
+      <HostContext.Provider value={host}>
+        <div className="App">
+          <NavBar
+            curPath={curPath}
+            curView={view}
+            navigate={navigate}
+            goBack={goBack}
+            goUp={goUp}
+            hasBack={getStackHeight() > 1}
+            hasForward={false}
+          />
+          <ViewComponent
+            contents={contents}
+            navigate={navigate}
+            goBack={goBack}
+          />
+        </div>
+      </HostContext.Provider>
+    </HostConfigContext.Provider>
   );
 }
 
